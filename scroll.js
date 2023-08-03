@@ -41,11 +41,11 @@ function increaseFontSizeOnWheel(event) {
 
         changeLuaOpacity = 0.02
 
-        changeImg1Opacity = 0.055
+        changeImg1Opacity = 0.075
 
-        changeImg2Opacity = 0.055
+        changeImg2Opacity = 0.075
         
-        changeImg3Opacity = 0.055
+        changeImg3Opacity = 0.075
         
         if (touchY > lastTouchY) {
             delta = -1
