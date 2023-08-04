@@ -54,8 +54,8 @@ function increaseFontSizeOnWheel(event) {
     if(event.type === "touchmove"){
         const touchY = event.touches[0].clientY;
 
-        changeOpacity = 0.04
-        changeSize = 0.8
+        changeOpacity = 0.08
+        changeSize = 15
 
         changeLuaOpacity = 0.02
 
@@ -90,7 +90,7 @@ function increaseFontSizeOnWheel(event) {
         
         delta = Math.sign(event.deltaY);
     }
-    console.log(delta, lock)
+    console.log("2")
 
     if(lock == true && delta == -1){
         lock = false
@@ -126,7 +126,7 @@ function increaseFontSizeOnWheel(event) {
             if(opacity > 1){
                 opacity = 1
             }
-            if(opacity < -0.25){
+            if(opacity < -0.1){
                 lua = true
             }
         }
