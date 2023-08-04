@@ -29,23 +29,41 @@ let img1 = false
 let img2 = false
 let img3 = false
 
+let lock = false
+
 function increaseFontSizeOnWheel(event) {
 
     let delta = 0
 
+    if(luaOpacity < 0){
+        luaOpacity = 0
+    }
+    
+    if(img1Opacity < 0){
+        img1Opacity = 0
+    }
+    
+    if(img2Opacity < 0){
+        img2Opacity = 0
+    }
+    
+    if(img3Opacity < 0){
+        img3Opacity = 0
+    }
+
     if(event.type === "touchmove"){
         const touchY = event.touches[0].clientY;
 
-        changeOpacity = 0.02
-        changeSize = 0.4
+        changeOpacity = 0.04
+        changeSize = 0.8
 
         changeLuaOpacity = 0.02
 
-        changeImg1Opacity = 0.075
+        changeImg1Opacity = 0.09
 
-        changeImg2Opacity = 0.075
+        changeImg2Opacity = 0.09
         
-        changeImg3Opacity = 0.075
+        changeImg3Opacity = 0.08
         
         if (touchY > lastTouchY) {
             delta = -1
@@ -72,124 +90,135 @@ function increaseFontSizeOnWheel(event) {
         
         delta = Math.sign(event.deltaY);
     }
+    console.log(delta, lock)
 
-    if (opacity == maxOpacity) {
-        if (delta > 0) {
-            fontSize += changeSize;
-        } else if (delta < 0) {
-            fontSize -= changeSize;
-            if (fontSize < 0) {
-                fontSize = 0;
+    if(lock == true && delta == -1){
+        lock = false
+    }
+
+    if(lock == false){
+
+        if (opacity == maxOpacity) {
+            if (delta > 0) {
+                fontSize += changeSize;
+            } else if (delta < 0) {
+                fontSize -= changeSize;
+                if (fontSize < 0) {
+                    fontSize = 0;
+                }
             }
         }
+
+        const maxFontSizeVW = 6;
+        const viewportWidth = window.innerWidth;
+        const maxFontSizePixels = (maxFontSizeVW * viewportWidth) / 100;
+        fontSize = Math.min(fontSize, maxFontSizePixels);
+
+        if (fontSize >= maxFontSizePixels) {
+            if (delta > 0) {
+                opacity -= changeOpacity;
+                h1Element.style.opacity = opacity;
+
+            } else if (delta < 0) {
+                opacity += changeOpacity;
+                h1Element.style.opacity = opacity;
+            }
+            if(opacity > 1){
+                opacity = 1
+            }
+            if(opacity < -0.25){
+                lua = true
+            }
+        }
+
+        if(lua == true){
+            
+            if(luaElement.style.opacity <= 0){
+                lua = false
+                luaElement.style.opacity = 0
+            }
+
+            if (delta > 0) {
+                luaOpacity += changeLuaOpacity;
+                luaElement.style.opacity = luaOpacity;
+            } else if (delta < 0) {
+                luaOpacity -= changeLuaOpacity;
+                luaElement.style.opacity = luaOpacity;
+            }
+
+            if(luaElement.style.opacity >= 0.2){
+                img3 = true
+            }
+
+        }
+
+        if(img1 == true){
+
+            if(img1Element.style.opacity <= 0){
+                img1 = false
+                img1Element.style.opacity = 0
+            }
+
+            if (delta > 0) {
+                img1Opacity += changeImg1Opacity;
+                img1Element.style.opacity = img1Opacity;
+            } else if (delta < 0) {
+                img1Opacity -= changeImg1Opacity;
+                img1Element.style.opacity = img1Opacity;
+            }
+
+            if(luaElement.style.opacity >= 1.2){
+                lock = true
+            }
+
+        }
+
+        if(img2 == true){
+
+            if(img2Element.style.opacity <= 0){
+                img2 = false
+                img2Element.style.opacity = 0
+            }
+
+            if (delta > 0) {
+                img2Opacity += changeImg2Opacity;
+                img2Element.style.opacity = img2Opacity;
+            } else if (delta < 0) {
+                img2Opacity -= changeImg2Opacity;
+                img2Element.style.opacity = img2Opacity;
+            }
+
+            if(img2Element.style.opacity >= 0.2){
+                img1 = true
+            }
+
+        }
+
+        if(img3 == true){
+
+            if(img3Element.style.opacity <= 0){
+                img3 = false
+                img3Element.style.opacity = 0
+            }
+
+            if (delta > 0) {
+                img3Opacity += changeImg3Opacity;
+                img3Element.style.opacity = img3Opacity;
+            } else if (delta < 0) {
+                img3Opacity -= changeImg3Opacity;
+                img3Element.style.opacity = img3Opacity;
+            }
+
+            if(img3Element.style.opacity >= 0.2){
+                img2 = true
+            }
+
+        }
+
+        h1Element.style.fontSize = fontSize + "px";
+
     }
 
-    const maxFontSizeVW = 6;
-    const viewportWidth = window.innerWidth;
-    const maxFontSizePixels = (maxFontSizeVW * viewportWidth) / 100;
-    fontSize = Math.min(fontSize, maxFontSizePixels);
-
-    if (fontSize >= maxFontSizePixels) {
-        if (delta > 0) {
-            opacity -= changeOpacity;
-            h1Element.style.opacity = opacity;
-        } else if (delta < 0) {
-            opacity += changeOpacity;
-            h1Element.style.opacity = opacity;
-        }
-        if(opacity > 1){
-            opacity = 1
-        }
-        if(opacity < -0.5){
-            lua = true
-        }
-    }
-
-    if(lua == true){
-        
-        if(luaElement.style.opacity <= 0){
-            lua = false
-            luaElement.style.opacity = 0
-        }
-
-        if (delta > 0) {
-            luaOpacity += changeLuaOpacity;
-            luaElement.style.opacity = luaOpacity;
-        } else if (delta < 0) {
-            luaOpacity -= changeLuaOpacity;
-            luaElement.style.opacity = luaOpacity;
-        }
-
-        if(luaElement.style.opacity >= 0.2){
-            img3 = true
-        }
-
-    }
-
-    if(img1 == true){
-
-        if(img1Element.style.opacity <= 0){
-            img1 = false
-            img1Element.style.opacity = 0
-        }
-
-        if (delta > 0) {
-            img1Opacity += changeImg1Opacity;
-            img1Element.style.opacity = img1Opacity;
-        } else if (delta < 0) {
-            img1Opacity -= changeImg1Opacity;
-            img1Element.style.opacity = img1Opacity;
-        }
-
-        if(img1Element.style.opacity >= 0.2){
-            //mg2 = true
-        }
-
-    }
-
-    if(img2 == true){
-
-        if(img2Element.style.opacity <= 0){
-            img2 = false
-            img2Element.style.opacity = 0
-        }
-
-        if (delta > 0) {
-            img2Opacity += changeImg2Opacity;
-            img2Element.style.opacity = img2Opacity;
-        } else if (delta < 0) {
-            img2Opacity -= changeImg2Opacity;
-            img2Element.style.opacity = img2Opacity;
-        }
-
-        if(img2Element.style.opacity >= 0.2){
-            img1 = true
-        }
-
-    }
-
-    if(img3 == true){
-
-        if(img3Element.style.opacity <= 0){
-            img3 = false
-            img3Element.style.opacity = 0
-        }
-
-        if (delta > 0) {
-            img3Opacity += changeImg3Opacity;
-            img3Element.style.opacity = img3Opacity;
-        } else if (delta < 0) {
-            img3Opacity -= changeImg3Opacity;
-            img3Element.style.opacity = img3Opacity;
-        }
-
-        if(img3Element.style.opacity >= 0.2){
-            img2 = true
-        }
-
-    }
-
-    h1Element.style.fontSize = fontSize + "px";
 }
 
 document.addEventListener("wheel", increaseFontSizeOnWheel);
