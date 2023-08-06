@@ -1,4 +1,5 @@
 const h1Element = document.getElementById("f1");
+const h2Element = document.getElementById("f2");
 const luaElement = document.getElementById("lua");
 
 const img1Element = document.getElementById("img1");
@@ -23,6 +24,7 @@ let luaOpacity = 0
 let img1Opacity = 0
 let img2Opacity = 0
 let img3Opacity = 0
+let h2Opacity = 0
 
 let lua = false
 let img1 = false
@@ -30,6 +32,8 @@ let img2 = false
 let img3 = false
 
 let lock = false
+
+let h2 = false
 
 function increaseFontSizeOnWheel(event) {
 
@@ -64,6 +68,8 @@ function increaseFontSizeOnWheel(event) {
         changeImg2Opacity = 0.09
         
         changeImg3Opacity = 0.08
+
+        changeh2Opacity = 0.08
         
         if (touchY > lastTouchY) {
             delta = -1
@@ -87,10 +93,12 @@ function increaseFontSizeOnWheel(event) {
 
         changeImg3Opacity = 0.2
         changeImg3Size = 4
+
+        changeh2Opacity = 0.2
         
         delta = Math.sign(event.deltaY);
     }
-    console.log("3")
+    console.log("4")
 
     if(lock == true && delta == -1){
         lock = false
@@ -167,10 +175,30 @@ function increaseFontSizeOnWheel(event) {
                 img1Element.style.opacity = img1Opacity;
             }
 
-            if(luaElement.style.opacity >= 1.2){
-                lock = true
+            if(luaElement.style.opacity >= 0.4){
+                h2 = true
             }
 
+        }
+
+        if(h2 == true){
+
+            if(h2Element.style.opacity <= 0){
+                h2 = false
+                h2Element.style.opacity = 0
+            }
+            
+            if (delta > 0) {
+                h2Opacity += changeh2Opacity;
+                h2Element.style.opacity = h2Opacity;
+            } else if (delta < 0) {
+                h2Opacity -= changeh2Opacity;
+                h2Element.style.opacity = h2Opacity;
+            }
+
+            if(h2Element.style.opacity >= 1.2){
+                lock = true
+            }
         }
 
         if(img2 == true){
